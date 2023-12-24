@@ -1,0 +1,3 @@
+[submodule "src/kernel/lib/libft"]
+	path = src/kernel/lib/libft
+	url = git@github.com:ClemaX/libft.git
