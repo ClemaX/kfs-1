@@ -1,6 +1,9 @@
-#include <terminal.h>
+#include <kernel/terminal.h>
 #include <vga.h>
-#include <utils.h>
+#include <string.h>
+
+static const size_t VGA_WIDTH = 80;
+static const size_t VGA_HEIGHT = 25;
 
 struct terminal terminal;
 
@@ -57,7 +60,6 @@ void terminal_scroll_down(unsigned y)
 	memmove(terminal.buffer, terminal.buffer + delta, sizeof(*terminal.buffer) * new_length);
 	terminal.row -= y;
 	terminal_clear_at(0, terminal.row + 1);
-	//memset(terminal.buffer + new_length, vga_entry(' ', terminal.color), sizeof(terminal.buffer) * VGA_WIDTH * VGA_HEIGHT - new_length);
 }
 
 void terminal_move_rel(int x, int y)
@@ -65,8 +67,9 @@ void terminal_move_rel(int x, int y)
 	if (terminal.column + x >= VGA_WIDTH)
 	{
 		y += (terminal.column + x) / VGA_WIDTH;
-		x = terminal.column + x % VGA_WIDTH;
 	}
+
+	x = terminal.column + x % VGA_WIDTH;
 
 	if (terminal.row + y >= VGA_HEIGHT)
 	{
@@ -100,13 +103,10 @@ void terminal_putchar(char c)
 	}
 }
 
-void terminal_write(const char* data, size_t size)
+int terminal_write(const char* data, size_t size)
 {
 	for (size_t i = 0; i < size; i++)
 		terminal_putchar(data[i]);
-}
 
-void terminal_puts(const char* data)
-{
-	terminal_write(data, strlen(data));
+	return size;
 }

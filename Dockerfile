@@ -23,7 +23,7 @@ RUN ./build_toolchain.sh \
     "$binutils_version" "$gdb_version" "$gcc_version"
 
 COPY src/build_iso.sh /root
-COPY src/iso /root/iso
+COPY src/sysroot /root/sysroot
 COPY src/kernel /root/kernel
 
 CMD bash

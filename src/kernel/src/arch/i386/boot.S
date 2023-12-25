@@ -84,6 +84,11 @@ _start:
 	stack since (pushed 0 bytes so far), so the alignment has thus been
 	preserved and the call is well defined.
 	*/
+
+	# Call the global constructors.
+	call _init
+
+	# Transfer control to the main kernel.
 	call kernel_main
 
 	/*
